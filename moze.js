@@ -1,4 +1,9 @@
-// MOZE 解锁 - RevenueCat
+
+if (/(offerings|attributes|adservices_attribution)/.test($request.url)) {
+  console.log("检测到已屏蔽的URL，已跳过脚本执行。");
+  $done({});
+}
+
 let obj = JSON.parse($response.body || "{}");
 
 const entitlement = "MOZE_PREMIUM_SUBSCRIPTION";
@@ -32,7 +37,6 @@ obj.subscriber.subscriptions[product] = {
 
 obj.subscriber.non_subscriptions = obj.subscriber.non_subscriptions || {};
 obj.subscriber.original_purchase_date = obj.subscriber.original_purchase_date || purchase;
-
 obj.subscriber.management_url = obj.subscriber.management_url || "https://apps.apple.com/account/subscriptions";
 obj.subscriber.original_app_user_id = obj.subscriber.original_app_user_id || "$RCAnonymousID:moze";
 obj.request_date = obj.request_date || new Date().toISOString();
